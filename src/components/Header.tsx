@@ -33,7 +33,8 @@ const Header: React.FC<HeaderProps> = ({
             <ArrowLeft size={20} />
           </button>
         ) : (
-          <div className="w-10" /> {/* Spacer */}
+          // Spacer
+          <div className="w-10" />
         )}
         
         {title && (
@@ -41,9 +42,11 @@ const Header: React.FC<HeaderProps> = ({
         )}
         
         {isHomePage ? (
-          <div className="w-10" /> {/* Spacer for alignment */}
+          // Spacer for alignment
+          <div className="w-10" />
         ) : (
-          <div className="w-10" /> {/* Spacer for alignment */}
+          // Spacer for alignment
+          <div className="w-10" />
         )}
       </div>
     </header>
