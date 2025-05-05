@@ -20,7 +20,7 @@ const About: React.FC = () => {
     },
     {
       title: 'Memorable Experiences',
-      description: 'We strive to create not just events, but stories and memories that stay with you long after you\'ve left our space.'
+      description: "We strive to create not just events, but stories and memories that stay with you long after you've left our space."
     }
   ];
 

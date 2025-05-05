@@ -1,34 +1,47 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Button from '@/components/Button';
-import ServiceCard from '@/components/ServiceCard';
+import ProductCard from '@/components/ProductCard';
+import FeaturedProduct from '@/components/FeaturedProduct';
+import { products, categoryFilters } from '@/data/products';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Coffee, ShoppingBag } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Home: React.FC = () => {
-  const featuredServices = [
-    {
-      id: 1,
-      title: 'Corporate Events',
-      description: 'Elegant spaces for meetings, team-building, and corporate functions.',
-      imageSrc: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952',
-      to: '/services#corporate',
-    },
-    {
-      id: 2,
-      title: 'Team Lunches',
-      description: 'Sophisticated dining experiences for your team gatherings.',
-      imageSrc: 'https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf',
-      to: '/services#team-lunch',
-    },
-    {
-      id: 3,
-      title: 'Celebrations',
-      description: 'Make your special occasions memorable with our elegant settings.',
-      imageSrc: 'https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac',
-      to: '/services#celebrations',
-    },
-  ];
+  const [selectedProduct, setSelectedProduct] = useState(products.find(p => p.featured) || products[0]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [visibleCount, setVisibleCount] = useState(6);
+
+  const filteredProducts = selectedCategory === "all" 
+    ? products 
+    : products.filter(p => p.category === selectedCategory);
+
+  const handleShowMore = () => {
+    setVisibleCount(prev => Math.min(prev + 6, filteredProducts.length));
+  };
+
+  useEffect(() => {
+    // Reset visible count when category changes
+    setVisibleCount(6);
+  }, [selectedCategory]);
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
 
   return (
     <div className="min-h-screen pb-20">
@@ -37,43 +50,103 @@ const Home: React.FC = () => {
       <main>
         {/* Hero Section */}
         <section className="watercolor-bg py-12 px-4">
-          <div className="container max-w-md mx-auto text-center">
-            <img 
-              src="/src/assets/flamora-logo.svg" 
-              alt="Kafe Flamora Logo" 
-              className="w-24 h-24 mx-auto mb-6"
-            />
-            <h1 className="text-3xl font-serif text-flamora-brown mb-2">Kafe Flamora</h1>
-            <p className="text-lg font-serif italic mb-4">A Touch of Class</p>
-            <div className="bg-white/70 backdrop-blur-sm rounded-lg p-6 subtle-shadow">
-              <h2 className="text-xl font-serif mb-2">Brewing Soon</h2>
-              <p className="text-flamora-purple font-medium mb-6">Now Accepting Bookings For:</p>
-              <Button to="/booking" variant="gold" size="lg" fullWidth>
-                Book Your Event
-              </Button>
+          <div className="container max-w-5xl mx-auto text-center md:text-left md:flex md:items-center md:justify-between">
+            <div className="md:w-1/2 mb-8 md:mb-0">
+              <img 
+                src="/src/assets/flamora-logo.svg" 
+                alt="Kafe Flamora Logo" 
+                className="w-20 h-20 mx-auto md:mx-0 mb-4"
+              />
+              <h1 className="text-4xl font-serif text-flamora-brown mb-2">Kafe Flamora</h1>
+              <p className="text-lg font-serif italic mb-4">A Touch of Class</p>
+              <p className="text-muted-foreground mb-6 max-w-md mx-auto md:mx-0">
+                Discover our curated selection of premium coffee beans, brewing equipment, and elegant merchandise.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                <Button to="/services" variant="outline">
+                  <Coffee size={16} />
+                  Our Services
+                </Button>
+                <Button to="/booking" variant="default">
+                  <ShoppingBag size={16} />
+                  Shop Now
+                </Button>
+              </div>
+            </div>
+            <div className="md:w-1/2">
+              <div className="bg-white/70 backdrop-blur-sm rounded-lg p-6 subtle-shadow">
+                <h2 className="text-xl font-serif mb-2">Brewing Soon</h2>
+                <p className="text-flamora-purple font-medium mb-6">Now Accepting Bookings For:</p>
+                <Button to="/booking" variant="gold" size="lg" fullWidth>
+                  Book Your Event
+                </Button>
+              </div>
             </div>
           </div>
         </section>
         
-        {/* Services Preview */}
+        {/* Products Section */}
         <section className="py-10 px-4">
           <div className="container">
-            <h2 className="text-2xl font-serif text-center mb-8">Our Services</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {featuredServices.map((service) => (
-                <ServiceCard
-                  key={service.id}
-                  title={service.title}
-                  description={service.description}
-                  imageSrc={service.imageSrc}
-                  to={service.to}
-                />
-              ))}
-            </div>
-            <div className="text-center mt-8">
-              <Button to="/services" variant="outline">
-                View All Services
-              </Button>
+            <div className="flex flex-col md:flex-row gap-8">
+              {/* Left Column: Products Grid */}
+              <div className="md:w-3/5">
+                <div className="mb-8">
+                  <h2 className="text-2xl font-serif mb-4">Our Products</h2>
+                  
+                  {/* Category Filter */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {categoryFilters.map(category => (
+                      <button
+                        key={category.value}
+                        onClick={() => setSelectedCategory(category.value)}
+                        className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                          selectedCategory === category.value
+                            ? 'bg-flamora-purple text-white'
+                            : 'bg-flamora-neutral-cream hover:bg-flamora-purple/20'
+                        }`}
+                      >
+                        {category.label}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {/* Products Grid */}
+                  <motion.div 
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                    variants={container}
+                    initial="hidden"
+                    animate="show"
+                    key={selectedCategory} // Re-animate when category changes
+                  >
+                    {filteredProducts.slice(0, visibleCount).map(product => (
+                      <motion.div key={product.id} variants={item}>
+                        <ProductCard 
+                          product={product}
+                          onMouseEnter={() => setSelectedProduct(product)}
+                        />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                  
+                  {/* Show More Button */}
+                  {visibleCount < filteredProducts.length && (
+                    <div className="text-center mt-8">
+                      <Button 
+                        variant="outline" 
+                        onClick={handleShowMore}
+                      >
+                        Show More
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {/* Right Column: Featured Product */}
+              <div className="md:w-2/5">
+                <FeaturedProduct product={selectedProduct} />
+              </div>
             </div>
           </div>
         </section>
