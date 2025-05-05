@@ -19,7 +19,7 @@ const FeaturedProduct: React.FC<FeaturedProductProps> = ({ product }) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
-        className="sticky top-32 bg-white/80 backdrop-blur-sm rounded-xl overflow-hidden shadow-xl border border-flamora-purple/10"
+        className="bg-white/80 backdrop-blur-sm rounded-xl overflow-hidden shadow-xl border border-flamora-purple/10"
       >
         <div className="aspect-video overflow-hidden">
           <img 

@@ -6,26 +6,25 @@ import Button from '@/components/Button';
 import ProductCard from '@/components/ProductCard';
 import FeaturedProduct from '@/components/FeaturedProduct';
 import { products, categoryFilters } from '@/data/products';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Coffee, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Home: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState(products.find(p => p.featured) || products[0]);
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(12);
 
   const filteredProducts = selectedCategory === "all" 
     ? products 
     : products.filter(p => p.category === selectedCategory);
 
   const handleShowMore = () => {
-    setVisibleCount(prev => Math.min(prev + 6, filteredProducts.length));
+    setVisibleCount(prev => Math.min(prev + 12, filteredProducts.length));
   };
 
   useEffect(() => {
     // Reset visible count when category changes
-    setVisibleCount(6);
+    setVisibleCount(12);
   }, [selectedCategory]);
 
   const container = {
@@ -33,7 +32,7 @@ const Home: React.FC = () => {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.05
       }
     }
   };
@@ -88,9 +87,9 @@ const Home: React.FC = () => {
         {/* Products Section */}
         <section className="py-10 px-4">
           <div className="container">
-            <div className="flex flex-col md:flex-row gap-8">
+            <div className="flex flex-col-reverse md:flex-row gap-6 lg:gap-8">
               {/* Left Column: Products Grid */}
-              <div className="md:w-3/5">
+              <div className="md:w-2/3">
                 <div className="mb-8">
                   <h2 className="text-2xl font-serif mb-4">Our Products</h2>
                   
@@ -113,7 +112,7 @@ const Home: React.FC = () => {
                   
                   {/* Products Grid */}
                   <motion.div 
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
                     variants={container}
                     initial="hidden"
                     animate="show"
@@ -144,8 +143,10 @@ const Home: React.FC = () => {
               </div>
               
               {/* Right Column: Featured Product */}
-              <div className="md:w-2/5">
-                <FeaturedProduct product={selectedProduct} />
+              <div className="md:w-1/3 relative">
+                <div className="sticky top-24">
+                  <FeaturedProduct product={selectedProduct} />
+                </div>
               </div>
             </div>
           </div>
