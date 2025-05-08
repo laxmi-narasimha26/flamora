@@ -137,6 +137,8 @@ export default {
       fontFamily: {
         'serif': ['Playfair Display', 'serif'],
         'sans': ['Poppins', 'sans-serif'],
+        'script': ['Tangerine', 'cursive'],
+        'elegant': ['Great Vibes', 'cursive'],
       },
     }
   },

@@ -52,7 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className, onMouseEn
         />
       </div>
       <div className="p-4 border-t">
-        <h3 className="font-serif text-lg truncate">{product.name}</h3>
+        <h3 className="font-elegant text-xl md:text-2xl truncate">{product.name}</h3>
         <p className="text-flamora-purple font-medium">{product.price}</p>
       </div>
       
@@ -62,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className, onMouseEn
             <div className="absolute inset-0 bg-gradient-to-t from-flamora-purple/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </TooltipTrigger>
           <TooltipContent side="right" className="max-w-xs p-2 text-xs">
-            <p className="font-serif italic">Hover to preview</p>
+            <p className="font-script text-base italic">Hover to preview</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
